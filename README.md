@@ -1,0 +1,4 @@
+philosophers
+============
+
+Dining philosophers problem
