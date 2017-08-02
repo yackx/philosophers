@@ -64,7 +64,7 @@ func main() {
 		forks[i] = new(Fork)
 	}
 
-	// Create philospoher, assign them 2 forks and send them to the dining table
+	// Create philosopher, assign them 2 forks and send them to the dining table
 	philosophers := make([]*Philosopher, count)
 	for i := 0; i < count; i++ {
 		philosophers[i] = &Philosopher{
