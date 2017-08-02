@@ -16,8 +16,8 @@ import (
 type Fork struct{ sync.Mutex }
 
 type Philosopher struct {
-	id                  int
-	leftFork, rightFork *Fork
+	id          int
+	left, right *Fork
 }
 
 // Endlessly dine.
@@ -29,14 +29,14 @@ func (p Philosopher) dine() {
 	randomPause(2)
 
 	say("hungry", p.id)
-	p.leftFork.Lock()
-	p.rightFork.Lock()
+	p.left.Lock()
+	p.right.Lock()
 
 	say("eating", p.id)
 	randomPause(5)
 
-	p.rightFork.Unlock()
-	p.leftFork.Unlock()
+	p.right.Unlock()
+	p.left.Unlock()
 
 	p.dine()
 }
@@ -68,7 +68,7 @@ func main() {
 	philosophers := make([]*Philosopher, count)
 	for i := 0; i < count; i++ {
 		philosophers[i] = &Philosopher{
-			id: i, leftFork: forks[i], rightFork: forks[(i+1)%count]}
+			id: i, left: forks[i], right: forks[(i+1)%count]}
 		go philosophers[i].dine()
 	}
 
