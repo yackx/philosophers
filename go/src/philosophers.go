@@ -13,6 +13,9 @@ import (
 	"time"
 )
 
+const howMany = 5
+const pauseInMilliseconds = 2000
+
 type Fork struct{ sync.Mutex }
 
 type Philosopher struct {
@@ -20,29 +23,25 @@ type Philosopher struct {
 	left, right *Fork
 }
 
-// Endlessly dine.
-// Goes from thinking to hungry to eating and starts over.
-// Adapt the pause values to increased or decrease contentions
-// around the forks.
 func (p Philosopher) dine() {
-	say("thinking", p.id)
-	randomPause(2)
+	for {
+		say("thinking", p.id)
+		randomPause()
 
-	say("hungry", p.id)
-	p.left.Lock()
-	p.right.Lock()
+		say("hungry", p.id)
+		p.left.Lock()
+		p.right.Lock()
 
-	say("eating", p.id)
-	randomPause(5)
+		say("eating", p.id)
+		randomPause()
 
-	p.right.Unlock()
-	p.left.Unlock()
-
-	p.dine()
+		p.right.Unlock()
+		p.left.Unlock()
+	}
 }
 
-func randomPause(max int) {
-	time.Sleep(time.Millisecond * time.Duration(rand.Intn(max*1000)))
+func randomPause() {
+	time.Sleep(time.Millisecond * time.Duration(rand.Intn(pauseInMilliseconds)))
 }
 
 func say(action string, id int) {
@@ -55,21 +54,28 @@ func init() {
 }
 
 func main() {
-	// How many philosophers and forks
-	count := 5
-
 	// Create forks
-	forks := make([]*Fork, count)
-	for i := 0; i < count; i++ {
+	forks := make([]*Fork, howMany)
+	for i := 0; i < howMany; i++ {
 		forks[i] = new(Fork)
 	}
 
-	// Create philosopher, assign them 2 forks and send them to the dining table
-	philosophers := make([]*Philosopher, count)
-	for i := 0; i < count; i++ {
-		philosophers[i] = &Philosopher{
-			id: i, left: forks[i], right: forks[(i+1)%count]}
-		go philosophers[i].dine()
+	// Create philosophers,
+	// assign them 2 forks and send them to the dining table
+	philosophers := make([]*Philosopher, howMany)
+	for i := 1; i <= howMany; i++ {
+		left := i - 1
+		right := i % howMany
+		if i == howMany {
+			// The last philosopher picks up the right fork first
+			// to avoid a deadlock
+			left, right = right, left
+		}
+		fmt.Println("Philosopher", i, "has forks", left, "and", right)
+		philosophers[i-1] = &Philosopher{
+			id: i, left: forks[left], right: forks[right],
+		}
+		go philosophers[i-1].dine()
 	}
 
 	// Wait endlessly while they're dining
