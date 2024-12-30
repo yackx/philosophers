@@ -45,7 +45,7 @@ func randomPause() {
 }
 
 func say(action string, id int) {
-	fmt.Printf("#%d is %s\n", id, action)
+	fmt.Printf("#%d %s\n", id, action)
 }
 
 func main() {
