@@ -7,13 +7,8 @@ import java.util.concurrent.*
 
 @TypeChecked
 class Philosopher {
-
-    enum State { THINKING, HUNGRY, EATING }
-
     int MAX_TIME = 1 * 1000
-
     int id
-    State state
     Semaphore left, right
 
     private void randomPause() {
@@ -22,25 +17,22 @@ class Philosopher {
 
     private void dine() {
         while (true) {
-            state = State.THINKING
-            println this
+            say "thinking"
             randomPause()
 
-            state = State.HUNGRY
-            println this
+            say "hungry"
             left.acquire()
             right.acquire()
 
-            state = State.EATING
+            say "eating"
             randomPause()
-            println this
             right.release()
             left.release()
         }
     }
 
-    @Override String toString() {
-        "#${id} is $state"
+    private void say(String msg) {
+        printf("#%d %s\n", id, msg)
     }
 }
 
