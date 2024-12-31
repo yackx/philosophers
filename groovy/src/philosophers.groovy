@@ -17,17 +17,21 @@ class Philosopher {
 
     private void dine() {
         while (true) {
-            say "thinking"
-            randomPause()
+            try {
+                say "thinking"
+                randomPause()
 
-            say "hungry"
-            left.acquire()
-            right.acquire()
+                say "hungry"
+                left.acquire()
+                right.acquire()
 
-            say "eating"
-            randomPause()
-            right.release()
-            left.release()
+                say "eating"
+                randomPause()
+            }
+            finally {
+                right.release()
+                left.release()
+            }
         }
     }
 
