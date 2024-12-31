@@ -7,7 +7,7 @@ import java.util.concurrent.*
 
 @TypeChecked
 class Philosopher {
-    int MAX_TIME = 1 * 1000
+    int MAX_TIME = 1 * 2000
     int id
     Semaphore left, right
 
@@ -45,7 +45,13 @@ int PHILOSOPHER_COUNT = 5
 List<Semaphore> forks = (1..PHILOSOPHER_COUNT).collect { new Semaphore(1) }
 
 List<Philosopher> philosophers = (1..PHILOSOPHER_COUNT).collect { i ->
-    new Philosopher(id: i, left: forks[i - 1], right: forks[i % PHILOSOPHER_COUNT])
+    int leftIndex = i - 1
+    int rightIndex = i % PHILOSOPHER_COUNT
+    if (i == PHILOSOPHER_COUNT) {
+        leftIndex = 0
+        rightIndex = PHILOSOPHER_COUNT - 1
+    }
+    new Philosopher(id: i, left: forks[leftIndex], right: forks[rightIndex])
 }
 
 withPool(PHILOSOPHER_COUNT) {
