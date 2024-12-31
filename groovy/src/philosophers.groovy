@@ -21,22 +21,22 @@ class Philosopher {
     }
 
     private void dine() {
-        state = State.THINKING
-        println this
-        randomPause()
+        while (true) {
+            state = State.THINKING
+            println this
+            randomPause()
 
-        state = State.HUNGRY
-        println this
-        left.acquire()
-        right.acquire()
+            state = State.HUNGRY
+            println this
+            left.acquire()
+            right.acquire()
 
-        state = State.EATING
-        randomPause()
-        println this
-        right.release()
-        left.release()
-
-        dine()
+            state = State.EATING
+            randomPause()
+            println this
+            right.release()
+            left.release()
+        }
     }
 
     @Override String toString() {
