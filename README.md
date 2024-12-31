@@ -1,42 +1,14 @@
 Dining philosophers
 ===================
 
-The classical [Dining philosophers problem](http://en.wikipedia.org/wiki/Dining_philosophers_problem), in Groovy and in Go.
+**The classical [Dining philosophers problem](http://en.wikipedia.org/wiki/Dining_philosophers_problem), in various programming languages.**
 
-## Go
+## Content
 
-Uses a `sync.Mutex` to represent the forks.
+See [some hint](https://w3.cs.jmu.edu/kirkpams/OpenCSF/Books/csf/html/DiningPhil.html).
 
-	youri@gyros philosophers> go run go/src/philosophers.go
-	#0 is thinking
-	#1 is thinking
-	#2 is thinking
-	#3 is thinking
-	#4 is thinking
-	#0 is hungry
-	#0 is eating
-	#3 is hungry
-	#3 is eating
-	#2 is hungry
-	#4 is hungry
+Each philosopher grabs the fork on their left, then the fork on their right. To avoid a deadlock where each philosophers has grabbed the fork on their left, but become unable to grab the fork on their right, the last philospher grabs the forks in reverse order (right then left).
 
-## Groovy
-
-Uses `Semaphore`s to represent the forks.
-
-	youri@gyros philosophers> groovy groovy/src/philosophers.groovy
-	#3 is THINKING
-	#5 is THINKING
-	#4 is THINKING
-	#2 is THINKING
-	#1 is THINKING
-	#2 is HUNGRY
-	#4 is HUNGRY
-	#4 is EATING
-	#4 is THINKING
-	#1 is HUNGRY
-	#5 is HUNGRY
-
-### License
+## License
 
 [GNU General Public License version 3](http://www.gnu.org/licenses/gpl.html)
