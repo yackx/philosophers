@@ -27,14 +27,11 @@ func (p Philosopher) dine() {
 	for {
 		say("thinking", p.id)
 		randomPause()
-
 		say("hungry", p.id)
 		p.left.Lock()
 		p.right.Lock()
-
 		say("eating", p.id)
 		randomPause()
-
 		p.right.Unlock()
 		p.left.Unlock()
 	}
@@ -55,8 +52,8 @@ func main() {
 		forks[i] = new(Fork)
 	}
 
-	// Create philosophers,
-	// assign them 2 forks and send them to the dining table
+	// Create philosophers.
+	// Assign them 2 forks and send them to the dining table
 	philosophers := make([]*Philosopher, howMany)
 	for i := 1; i <= howMany; i++ {
 		left := i - 1
