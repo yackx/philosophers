@@ -24,9 +24,7 @@ class Philosopher(id: Int, left: Semaphore, right: Semaphore) extends Runnable {
     }
   }
   
-  private def log(msg: String): Unit = {
-    println(s"#$id $msg")
-  }
+  private def log(msg: String): Unit = println(s"#$id $msg")
 }
 
 @main
